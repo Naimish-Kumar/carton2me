@@ -45,8 +45,8 @@ class _DashBoardState extends State<DashBoard> {
       body: _currentIndex == 0
           ?  const HomeScreen()
           : _currentIndex == 1
-              ? const ShowDetailsScreen()
-              : AddDetailsScreen(item1Controller: item1Controller),
+              ? AddDetailsScreen(item1Controller: item1Controller)
+              : const ShowDetailsScreen(),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (value) {
