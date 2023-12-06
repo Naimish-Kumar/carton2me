@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoardingScreen extends StatelessWidget {
     static const String isLoggedInKey = 'isLoggedIn';
+    static const String routeName = 'onboardingscreen';
     static Future<bool> isLoggedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool(isLoggedInKey) ?? false;

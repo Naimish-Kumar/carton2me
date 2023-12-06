@@ -1,11 +1,7 @@
-import 'dart:convert';
 import 'package:carton2me/core/routes.dart';
-import 'package:carton2me/data/app_urls.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/InputField.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/submit_button.dart';
 import 'package:carton2me/presentation/screens/auth/login_screen.dart';
-import 'package:carton2me/presentation/screens/dashboard_screen.dart';
-import 'package:carton2me/presentation/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:loading_indicator/loading_indicator.dart';
@@ -13,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({super.key});
+  static const String routeName = 'signup';
 
   @override
   State<StatefulWidget> createState() => SignUpState();
@@ -31,21 +28,6 @@ class SignUpState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void trySubmitForm() {
-      final bool? isValid = _formKey.currentState?.validate();
-      if (isValid == true) {
-        registerUser(
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-          email: _emailController.text,
-          password: _passwordController.text,
-          reppassword: _reppasswordController.text,
-          phone: _phoneController.text,
-          context: context,
-        );
-      }
-    }
-
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -194,9 +176,7 @@ class SignUpState extends State<SignUpScreen> {
                             )
                             : SubmitButton(
                                 text: 'Register',
-                                onPressed: () {
-                                  trySubmitForm();
-                                },
+                                onPressed: (){},
                               ),
                       ),
                       const SizedBox(
@@ -244,75 +224,5 @@ class SignUpState extends State<SignUpScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> registerUser(
-      {required String firstName,
-      required String lastName,
-      required String email,
-      required String password,
-      required String reppassword,
-      required String phone,
-      required BuildContext context}) async {
-    setState(() {
-      isLoading = true;
-    });
-
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcl9pZCI6IlNBMDAwMSIsImVtYWlsX2FkZHJlc3MiOiJhZG1pbkBhZG1pbi5jb20iLCJleHBpcmVzSW4iOjE3MDM4NTA1MTEsImlhdCI6MTcwMTg1MjQ5NX0._Rk1KSREwWAGtefiaXjZXJElSZadhk3Ofe_l1D0nBMc'
-    };
-
-    var request = http.Request('POST', Uri.parse(AppUrl.createUser));
-    request.body = json.encode({
-      "first_name": firstName,
-      "last_name": lastName,
-      "email_address": email,
-      "user_password": password,
-      "phone_number": int.parse(phone),
-      "company_name": 'xyz compny',
-      "start_date": '2023-01-01',
-      "end_date": '2024-01-01',
-      "date_of_birth": '2001-05-03',
-    });
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-
-      setState(() {
-        isLoading = false;
-      });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool(OnBoardingScreen.isLoggedInKey, true);
-      // Navigate to the next screen or perform any action upon successful registration
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("User created successfully"),
-        ),
-      );
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const DashBoard(),
-        ),
-      );
-    } else {
-      setState(() {
-        isLoading = false;
-      });
-      print(response.reasonPhrase);
-      // Handle registration failure, show error message, etc.
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error ${response.reasonPhrase}'),
-        ),
-      );
-    }
   }
 }

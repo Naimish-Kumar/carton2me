@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:carton2me/presentation/screens/auth/login_screen.dart';
+import 'package:carton2me/presentation/screens/auth/signup_screen.dart';
+import 'package:carton2me/presentation/screens/onboarding_screen.dart';
+import 'package:flutter/cupertino.dart';
 
-class Routes{
+class Routes {
   static const String splash = '/';
   static const String home = '/home';
   static const String login = '/login';
@@ -20,5 +23,18 @@ class Routes{
         );
       },
     );
+  }
+
+  static Route? onGenerateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case LoginScreen.routeName:
+        return CupertinoPageRoute(builder: (context) => LoginScreen());
+      case SignUpScreen.routeName:
+        return CupertinoPageRoute(builder: (context) => SignUpScreen());
+        case OnBoardingScreen.routeName:
+        return CupertinoPageRoute(builder: (context) => OnBoardingScreen());
+      default:
+      return null;
+    }
   }
 }

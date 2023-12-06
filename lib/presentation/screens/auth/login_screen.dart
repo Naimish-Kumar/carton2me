@@ -12,10 +12,9 @@ import 'package:http/http.dart' as http;
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
-
+  static const String routeName = 'login';
   @override
   State<StatefulWidget> createState() => LoginState();
 }
@@ -27,7 +26,7 @@ class LoginState extends State<LoginScreen> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
- 
+
   @override
   Widget build(BuildContext context) {
     void tryLoginForm() {
@@ -135,19 +134,18 @@ class LoginState extends State<LoginScreen> {
                 ),
                 Center(
                   child: isLoading
-                      ?  const SizedBox(
-                        height: 70,
-                        child: LoadingIndicator(
+                      ? const SizedBox(
+                          height: 70,
+                          child: LoadingIndicator(
                             indicatorType: Indicator.ballSpinFadeLoader,
                             colors: [Colors.red, Colors.pink],
                             strokeWidth: 1,
                           ),
-                      )
-                      :
-                  SubmitButton(
-                    text: 'Login',
-                    onPressed: tryLoginForm,
-                  ),
+                        )
+                      : SubmitButton(
+                          text: 'Login',
+                          onPressed: tryLoginForm,
+                        ),
                 ),
                 const SizedBox(
                   height: 15,
@@ -188,9 +186,9 @@ class LoginState extends State<LoginScreen> {
         ),
       ),
     );
-  
   }
-   Future<void> loginUser({
+
+  Future<void> loginUser({
     required String email,
     required String password,
   }) async {
@@ -243,5 +241,4 @@ class LoginState extends State<LoginScreen> {
       );
     }
   }
-
 }
