@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 class TextFormScreen extends StatelessWidget {
   final TextEditingController textEditingController;
   final String hinttext;
-  final IconData icon;
+  final IconData? icon;
   final String? Function(String?)? validator;
   final bool readOnly;
   final bool obscure;
   final bool obscure1;
   final bool suffixIcon;
+  final int maxlines;
   final Widget? suffixIconWidget;
   final void Function()? onPressed;
   final TextInputType? keyboardType;
@@ -19,7 +20,7 @@ class TextFormScreen extends StatelessWidget {
     super.key,
     required this.textEditingController,
     required this.hinttext,
-    required this.icon,
+    this.icon,
     this.obscure = true,
     this.obscure1 = true,
     this.validator,
@@ -28,6 +29,7 @@ class TextFormScreen extends StatelessWidget {
     this.suffixIconWidget,
     this.onPressed,
     this.keyboardType,
+    this.maxlines = 1
   });
 
   @override
@@ -35,6 +37,7 @@ class TextFormScreen extends StatelessWidget {
     return SizedBox(
       // height: 6.h,
       child: TextFormField(
+        maxLines: maxlines,
         controller: textEditingController,
         readOnly: readOnly,
         obscureText: suffixIcon ? obscure : false,

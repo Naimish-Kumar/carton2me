@@ -1,21 +1,19 @@
 import 'dart:convert';
 
 import 'package:carton2me/core/routes.dart';
+import 'package:carton2me/data/model/user_model/user_model.dart';
+import 'package:carton2me/main.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/InputField.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/submit_button.dart';
 import 'package:carton2me/presentation/screens/auth/forgot_password.dart';
 import 'package:carton2me/presentation/screens/auth/signup_screen.dart';
-import 'package:carton2me/presentation/screens/dashboard_screen.dart';
-import 'package:carton2me/presentation/screens/onboarding_screen.dart';
+import 'package:carton2me/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
-
   @override
   State<StatefulWidget> createState() => LoginState();
 }
@@ -27,7 +25,7 @@ class LoginState extends State<LoginScreen> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
- 
+
   @override
   Widget build(BuildContext context) {
     void tryLoginForm() {
@@ -135,19 +133,18 @@ class LoginState extends State<LoginScreen> {
                 ),
                 Center(
                   child: isLoading
-                      ?  const SizedBox(
-                        height: 70,
-                        child: LoadingIndicator(
+                      ? const SizedBox(
+                          height: 70,
+                          child: LoadingIndicator(
                             indicatorType: Indicator.ballSpinFadeLoader,
                             colors: [Colors.red, Colors.pink],
                             strokeWidth: 1,
                           ),
-                      )
-                      :
-                  SubmitButton(
-                    text: 'Login',
-                    onPressed: tryLoginForm,
-                  ),
+                        )
+                      : SubmitButton(
+                          text: 'Login',
+                          onPressed: tryLoginForm,
+                        ),
                 ),
                 const SizedBox(
                   height: 15,
@@ -188,22 +185,18 @@ class LoginState extends State<LoginScreen> {
         ),
       ),
     );
-  
   }
-   Future<void> loginUser({
+
+  Future loginUser({
     required String email,
     required String password,
   }) async {
     setState(() {
       isLoading = true;
     });
-
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcl9pZCI6IlNBMDAwMSIsImVtYWlsX2FkZHJlc3MiOiJhZG1pbkBhZG1pbi5jb20iLCJleHBpcmVzSW4iOjE3MDM4NTA1MTEsImlhdCI6MTcwMTg1MjQ5NX0._Rk1KSREwWAGtefiaXjZXJElSZadhk3Ofe_l1D0nBMc'
     };
-
     var request = http.Request(
         'POST', Uri.parse('https://api.carton.site/api/users/login'));
     request.body = json.encode({
@@ -211,37 +204,67 @@ class LoginState extends State<LoginScreen> {
       "password": password,
     });
     request.headers.addAll(headers);
-
     http.StreamedResponse response = await request.send();
-
+    print('response: ${response}');
     if (response.statusCode == 200) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool(OnBoardingScreen.isLoggedInKey, true);
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const DashBoard(),
-        ),
-      );
+      final res = await response.stream.bytesToString();
+      final jsonResponse = json.decode(res);
+      print('jsonResponse: ${jsonResponse}');
 
-      setState(() {
-        isLoading = false;
-      });
-      // Navigate to the home page or perform any action upon successful login
-      print(await response.stream.bytesToString());
+      if (jsonResponse['status'] == 'error') {
+        setState(() {
+          isLoading = false;
+        });
+          Fluttertoast.showToast(
+            msg: jsonResponse['message'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red.withOpacity(0.1),
+            textColor: Colors.red,
+            fontSize: 16.0);
+      } else if (jsonResponse['status'] == 'success') {
+        setState(() {
+          isLoading = false;
+        });
+
+        final userdata = jsonResponse['users'];
+        UserModel user = UserModel.fromJson(userdata);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(user: user),
+            ));
+              Fluttertoast.showToast(
+            msg: "User Logged In Successfully",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green.withOpacity(0.1),
+            textColor: Colors.green,
+            fontSize: 16.0);
+
+        return user;
+      }
     } else {
       setState(() {
         isLoading = false;
       });
       print(response.reasonPhrase);
-      // Handle login failure, show error message, etc.
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("User not found"),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text("User not found"),
+
+      //   ),
+      // );
+      Fluttertoast.showToast(
+          msg: "User Not Found",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+            backgroundColor: Colors.white.withOpacity(0.5),
+          textColor: Colors.red,
+          fontSize: 16.0);
     }
   }
-
 }
