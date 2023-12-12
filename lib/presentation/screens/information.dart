@@ -1,5 +1,6 @@
 import 'package:carton2me/core/routes.dart';
 import 'package:carton2me/core/ui.dart';
+import 'package:carton2me/data_not_found.dart';
 import 'package:carton2me/presentation/screens/information/about_us_screen.dart';
 import 'package:carton2me/presentation/screens/information/contact_us_screen.dart';
 import 'package:carton2me/presentation/screens/information/faq_screen.dart';
@@ -59,7 +60,7 @@ class _InformationState extends State<Information> {
                     Navigator.push(
                       context,
                       Routes.createRoute(
-                        child: const AboutUsScreen(),
+                        child: const DataNotFound(),
                       ),
                     );
                   },
@@ -87,7 +88,7 @@ class _InformationState extends State<Information> {
                     Navigator.push(
                       context,
                       Routes.createRoute(
-                        child: const ContactUsscreen(),
+                        child: const DataNotFound(),
                       ),
                     );
                   },
@@ -115,7 +116,7 @@ class _InformationState extends State<Information> {
                     Navigator.push(
                       context,
                       Routes.createRoute(
-                        child: const PrivacyPolicyScreen(),
+                        child: const DataNotFound(),
                       ),
                     );
                   },
@@ -143,7 +144,7 @@ class _InformationState extends State<Information> {
                     Navigator.push(
                       context,
                       Routes.createRoute(
-                        child: const FaqScreen(),
+                        child: const DataNotFound(),
                       ),
                     );
                   },

@@ -1,7 +1,6 @@
 import 'package:carton2me/core/routes.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/product_details.dart';
 import 'package:carton2me/presentation/screens/product_details_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HouseConnect extends StatelessWidget {
@@ -30,7 +29,7 @@ class HouseConnect extends StatelessWidget {
                    Navigator.push(context, Routes.createRoute(
                      child: ProductDetailScreen(
                       productDetail: ProductDetail(
-                        title: 'House Id',
+                        title: 'AP Outside',
                         description: 'Description',
                         imageUrl: 'assets/images/img2.png',
                         price: index.toString(),
@@ -58,9 +57,9 @@ class HouseConnect extends StatelessWidget {
                                 Column(
                                   children: [
                                     Text(
-                                      "House Id",
+                                      "AP Outside",
                                       style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.red),
                                     ),
@@ -75,7 +74,7 @@ class HouseConnect extends StatelessWidget {
                                     Text(
                                       "DateTime",
                                       style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.red),
                                     ),
@@ -108,10 +107,58 @@ class HouseConnect extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(fontSize: 15),
                             ),
-                            Text(
-                              "Meter:- 2.0",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text(
+                                      "BP(Civil Eng.)",
+                                      style: TextStyle(
+                                          fontSize: 14, fontWeight: FontWeight.bold,color: Colors.red),
+                                    ),
+                                    Text(
+                                      "140",
+                                      style: TextStyle(
+                                          fontSize: 12, fontWeight: FontWeight.w500),
+                                    )
+                                  ],
+                                ),
+                                 Column(
+                                  children: [
+                                    Text(
+                                      "Reconnaissance",
+                                      style: TextStyle(
+                                          fontSize: 14, fontWeight: FontWeight.bold,color: Colors.red),
+                                    ),
+                                    Text(
+                                      "12.0",
+                                      style: TextStyle(
+                                          fontSize: 12, fontWeight: FontWeight.w500),
+                                    )
+                                  ],
+                                ),
+                              
+                               Column(
+                                  children: [
+                                    Text(
+                                      "HA(M)",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,color: Colors.red),
+                                    ),
+                                    Text(
+                                      "140",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500),
+                                    )
+                                  ],
+                                ),
+                              
+                              
+                              
+                              ],
                             ),
                           ],
                         ),

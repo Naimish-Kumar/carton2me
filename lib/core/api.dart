@@ -5,7 +5,8 @@ class ApiUrls {
   static const String baseUrl = "https://api.carton.site/api";
   static const String createUser = "$baseUrl/customers/singup";
   static const String loginUser = "$baseUrl/users/login";
-  static const String updateProfile = "$baseUrl/users/update-profile";
+  static const String updateProfile = "$baseUrl/users/update-profile/";
+  static const String changePassword = "$baseUrl/users/change-password";
 
   static const Map<String, dynamic> defaultHeder = {
     'Content-Type': 'application/json',

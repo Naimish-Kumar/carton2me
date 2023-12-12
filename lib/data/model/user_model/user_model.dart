@@ -1,3 +1,4 @@
+
 class UserModel {
   int? id;
   String? userId;
@@ -6,12 +7,11 @@ class UserModel {
   String? emailAddress;
   dynamic? phoneNumber;
   String? companyName;
-  Null? dateOfBirth;
-  Null? userRole;
+  String? dateOfBirth;
+  String? userRole;
   String? userType;
   String? userAvatar;
-  Null? role;
-  String? accessToken;
+  String? role;
 
   UserModel(
       {this.id,
@@ -24,7 +24,6 @@ class UserModel {
       this.dateOfBirth,
       this.userRole,
       this.userType,
-      this.accessToken,
       this.userAvatar,
       this.role});
 
@@ -41,7 +40,6 @@ class UserModel {
     userType = json['user_type'];
     userAvatar = json['user_avatar'];
     role = json['Role'];
-    accessToken = json['accessToken'];
   }
 
   Map<String, dynamic> toJson() {

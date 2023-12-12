@@ -1,11 +1,21 @@
+import 'dart:convert';
+
+import 'package:carton2me/core/api.dart';
+import 'package:carton2me/core/app_helper.dart';
+import 'package:carton2me/core/routes.dart';
 import 'package:carton2me/data/model/user_model/user_model.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/InputField.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/submit_button.dart';
+import 'package:carton2me/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:loading_indicator/loading_indicator.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
-  UserModel userModel;
-  ChangePasswordScreen({super.key, required this.userModel});
+  ChangePasswordScreen({
+    super.key,
+  });
 
   @override
   State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
@@ -16,6 +26,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _obscureText = true;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,17 +116,32 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   height: 30,
                 ),
                 Center(
-                  child: SubmitButton(
-                    text: 'Submit',
-                    onPressed: () {},
-                  ),
+                  child: isLoading
+                      ? const SizedBox(
+                          height: 70,
+                          child: LoadingIndicator(
+                            indicatorType: Indicator.ballSpinFadeLoader,
+                            colors: [Colors.red, Colors.pink],
+                            strokeWidth: 1,
+                          ),
+                        )
+                      : SubmitButton(
+                          text: 'Submit',
+                          onPressed: () {
+                            changePassword();
+                          },
+                        ),
                 ),
               ],
             ),
           )),
     );
   }
+
   Future<void> changePassword() async {
+    setState(() {
+      isLoading = true;
+    });
     if (_newPasswordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -136,7 +162,51 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           content: Text('Passwords do not match'),
         ),
       );
+    } else {
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${AppHelper.ACCESSTOKEN}'
+      };
+      var request = http.Request('POST', Uri.parse(ApiUrls.changePassword));
+      request.body = json.encode({
+        "oldPassword": _confirmPasswordController.text,
+        "newPassword": _newPasswordController.text
+      });
+      request.headers.addAll(headers);
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        setState(() {
+          isLoading = false;
+        });
+        Fluttertoast.showToast(
+            msg: "Password Changed Successfully",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red.withOpacity(0.1),
+            textColor: Colors.red,
+            fontSize: 16.0);
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+            context,
+            Routes.createRoute(
+              child: const HomeScreen(),
+            ));
+        print(await response.stream.bytesToString());
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        print(response.reasonPhrase);
+        Fluttertoast.showToast(
+            msg: "Something went wrong",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red.withOpacity(0.1),
+            textColor: Colors.red,
+            fontSize: 16.0);
+      }
     }
-    
   }
 }

@@ -2,14 +2,15 @@ import 'dart:convert';
 import 'package:carton2me/core/api.dart';
 import 'package:carton2me/core/routes.dart';
 import 'package:carton2me/data/model/user_model/user_model.dart';
-import 'package:carton2me/main.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/InputField.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/submit_button.dart';
 import 'package:carton2me/presentation/screens/auth/login_screen.dart';
 import 'package:carton2me/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({super.key});
@@ -308,12 +309,30 @@ class SignUpState extends State<SignUpScreen> {
         setState(() {
           isLoading = false;
         });
-        final userdata = jsonResponse['data'];
+        final userdata = jsonResponse['users'];
         UserModel user = UserModel.fromJson(userdata);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', jsonResponse['accessToken']);
+        prefs.setString('userId', user.id.toString());
+        prefs.setString('firstName', user.firstName.toString());
+        prefs.setString('lastName', user.lastName.toString());
+        prefs.setString('email', user.emailAddress.toString());
+        prefs.setString('phoneNumber', user.phoneNumber.toString());
+        prefs.setString('companyName', user.companyName.toString());
+        prefs.setString('dateOfBirth', user.dateOfBirth.toString());
+        prefs.setString('userAvatar', user.userAvatar.toString());
+        Fluttertoast.showToast(
+            msg: "User Registered Successfully",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red.withOpacity(0.1),
+            textColor: Colors.red,
+            fontSize: 16.0);
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(user: user),
+              builder: (context) => const HomeScreen(),
             ));
 
         return user;

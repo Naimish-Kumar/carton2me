@@ -19,6 +19,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.red,
         title: Text(
           'Item ${widget.productDetail.price.toString()}',
           style: const TextStyle(
@@ -44,7 +45,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       height: 20,
                     ),
                     const Text(
-                      'Select your favorite social network and share our icons with your contacts or friends.',
+                      'Lorem ipsum dolor sit amet. ',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -55,30 +56,137 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Text(
-                      widget.productDetail.description.toString(),
-                      style: const TextStyle(
+                    const Text(
+                     "Details",
+                      style: TextStyle(
                         fontSize: 20,
-                        color: Colors.red,
+                        color: Colors.black,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    const Text(
-                      'Select your favorite social network and share our icons with your contacts or friends. If you don’t have these social networks, simply copy the link and paste it in the one you use. For moreSelect your favorite social network and share our icons with your contacts or friends. Select your favorite social network and share our icons with your contacts or friends.',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              'Ap Outside',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.red,
+                              ),
+                            ),
+                             Text(
+                              '16 M',
+                              style: TextStyle(
+                                fontSize: 14,
+
+                              ),
+                            ),
+                          ],
+                        ),
+                          Column(
+                          children: [
+                            Text(
+                              'BP(Civil Eng..)',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.red,
+                              ),
+                            ),
+                            Text(
+                              '34.0',
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        
+                      ],
                     ),
-                    const SizedBox(height: 60,),
-                    Center(
-                      child: SubmitButton(
-                        onPressed: () {},
-                        text: 'Submit',
-                      ),
-                    )
+                    const SizedBox(height: 20,),
+                      const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              'Reconnaissance',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.red,
+                              ),
+                            ),
+                            Text(
+                              '113',
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              'HA (meter built)',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.red,
+                              ),
+                            ),
+                            Text(
+                              '34.0',
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                      const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              'Have Column',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.red,
+                              ),
+                            ),
+                            Text(
+                              'No',
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 60,
+                    ),
+                    // Center(
+                    //   child: SubmitButton(
+                    //     onPressed: () {},
+                    //     text: 'Submit',
+                    //   ),
+                    // )
                   ],
                 ),
               ],

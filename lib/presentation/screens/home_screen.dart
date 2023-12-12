@@ -1,13 +1,14 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:carton2me/core/app_helper.dart';
 import 'package:carton2me/data/model/user_model/user_model.dart';
+import 'package:carton2me/data_not_found.dart';
 import 'package:carton2me/presentation/screens/add_details_screen.dart';
 import 'package:carton2me/presentation/screens/house_connect.dart';
 import 'package:carton2me/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  final UserModel user;
-  const HomeScreen({super.key, required this.user});
+  const HomeScreen({super.key,});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen>
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                   ),
                   Text(
-                    widget.user.firstName.toString(),
+                    AppHelper.firstName,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.red,
@@ -80,19 +81,13 @@ class _HomeScreenState extends State<HomeScreen>
               controller: _tabController,
               children: const [
                 HouseConnect(),
-                Center(
-                  child: Text('Tab 2 Content'),
-                ),
-                Center(
-                  child: Text('Tab 3 Content'),
-                ),
-                Center(
-                  child: Text('Tab 3 Content'),
-                ),
+                DataNotFound(),
+                DataNotFound(),
+                DataNotFound(),
+               
               ],
             )
           : ProfileScreen(
-              userModel: widget.user,
             ),
       floatingActionButton: FloatingActionButton(
         elevation: 10,
@@ -131,41 +126,5 @@ class _HomeScreenState extends State<HomeScreen>
         //other params
       ),
     );
-
-    // bottomNavigationBar: BottomNavigationBar(
-    //     currentIndex: _currentIndex,
-    //     onTap: (value) {
-    //       setState(() {
-    //         _currentIndex = value;
-    //       });
-    //     },
-    //     selectedItemColor: Colors.red,
-    //     selectedLabelStyle:
-    //         const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-    //     unselectedLabelStyle:
-    //         const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-    //     items: const [
-    //       BottomNavigationBarItem(
-    //         icon: Icon(
-    //           Icons.home,
-    //           size: 30,
-    //         ),
-    //         label: 'Home',
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: Icon(
-    //           Icons.add,
-    //           size: 30,
-    //         ),
-    //         label: 'Add Details',
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: Icon(
-    //           Icons.account_circle_rounded,
-    //           size: 30,
-    //         ),
-    //         label: 'Profile',
-    //       ),
-    //     ]),
   }
 }

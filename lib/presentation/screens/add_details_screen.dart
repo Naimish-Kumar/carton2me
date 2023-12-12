@@ -1,6 +1,9 @@
+import 'package:carton2me/core/routes.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/InputField.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/submit_button.dart';
+import 'package:carton2me/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:signature/signature.dart';
 
 class AddDetailsScreen extends StatefulWidget {
@@ -28,6 +31,13 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
     penColor: Colors.black,
     exportBackgroundColor: const Color.fromARGB(255, 255, 72, 93),
   );
+  String selectedValue = '';
+  final List<String> dropdownItems = [
+    'House Connection',
+    'Long Digging',
+    'Drilling',
+    'HP +',
+  ];
 
   @override
   void dispose() {
@@ -45,129 +55,175 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
       child: Column(
         children: [
           const SizedBox(
-            height: 50,
+            height: 40,
           ),
-          const Center(
-            child: Text(
-              'Add Details',
-              style: TextStyle(
-                  fontSize: 20, fontWeight: FontWeight.bold, color: Colors.red),
-            ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 20,
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              const Text(
+                'Add Details',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red),
+              ),
+            ],
           ),
           const SizedBox(
-            height: 20,
+            height: 10,
           ),
-          SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: TextFormScreen(
-                    hinttext: 'BP(HA civil engineering, piece)',
-                    textEditingController: item1Controller,
-                    icon: Icons.ac_unit_rounded,
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: TextFormScreen(
-                    hinttext: 'BP Is (date)',
-                    textEditingController: item2Controller,
-                    icon: Icons.ac_unit_rounded,
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: TextFormScreen(
-                    hinttext: 'Reconnaissance ',
-                    textEditingController: item3Controller,
-                    icon: Icons.add_chart_rounded,
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: TextFormScreen(
-                    hinttext: 'HA meter built ',
-                    textEditingController: item4Controller,
-                    icon: Icons.apartment_rounded,
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: TextFormScreen(
-                    hinttext: 'AP outside',
-                    textEditingController: item5Controller,
-                    icon: Icons.architecture_rounded,
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: TextFormScreen(
-                    hinttext: 'Have Column',
-                    textEditingController: item5Controller,
-                    icon: Icons.area_chart_rounded,
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Sketch at BL',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
+          Column(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    // DropdownButton<String>(
+                    //   value: selectedValue,
+                    //   onChanged: (String? newValue) {
+                    //     setState(() {
+                    //       selectedValue = newValue!;
+                    //     });
+                    //   },
+                    //   items: dropdownItems
+                    //       .map<DropdownMenuItem<String>>((String value) {
+                    //     return DropdownMenuItem<String>(
+                    //       value: value,
+                    //       child: Text(value),
+                    //     );
+                    //   }).toList(),
+                    // ),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: TextFormScreen(
+                        hinttext: 'BP(HA civil engineering, piece)',
+                        textEditingController: item1Controller,
+                        icon: Icons.ac_unit_rounded,
                       ),
-                      const SizedBox(
-                        height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: TextFormScreen(
+                        hinttext: 'BP Is (date)',
+                        textEditingController: item2Controller,
+                        icon: Icons.ac_unit_rounded,
                       ),
-                      Container(
-                        height: 300,
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 2),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Signature(
-                            controller: _controller,
-                            height: 300,
-                            backgroundColor: Colors.white,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: TextFormScreen(
+                        hinttext: 'Reconnaissance ',
+                        textEditingController: item3Controller,
+                        icon: Icons.add_chart_rounded,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: TextFormScreen(
+                        hinttext: 'HA meter built ',
+                        textEditingController: item4Controller,
+                        icon: Icons.apartment_rounded,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: TextFormScreen(
+                        hinttext: 'AP outside',
+                        textEditingController: item5Controller,
+                        icon: Icons.architecture_rounded,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: TextFormScreen(
+                        hinttext: 'Have Column',
+                        textEditingController: item5Controller,
+                        icon: Icons.area_chart_rounded,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Sketch at BL',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
                           ),
-                        ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            height: 300,
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black, width: 2),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Signature(
+                                controller: _controller,
+                                height: 300,
+                                backgroundColor: Colors.white,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          TextButton(
+                            onPressed: () => _controller.clear(),
+                            child: const Text('Reset'),
+                          )
+                        ],
                       ),
-                      const SizedBox(
-                        height: 5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: SubmitButton(
+                        onPressed: () {
+                          Fluttertoast.showToast(
+                              msg: "Details added Successfully",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.green.withOpacity(0.1),
+                              textColor: Colors.green,
+                              fontSize: 16.0);
+                          Navigator.pop(context);
+                        },
+                        text: 'Submit',
                       ),
-                      TextButton(
-                        onPressed: () => _controller.clear(),
-                        child: const Text('Reset'),
-                      )
-                    ],
-                  ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    )
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: SubmitButton(
-                    onPressed: () {},
-                    text: 'Submit',
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                )
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

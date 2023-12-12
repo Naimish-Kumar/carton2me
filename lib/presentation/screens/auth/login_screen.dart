@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:carton2me/core/routes.dart';
 import 'package:carton2me/data/model/user_model/user_model.dart';
-import 'package:carton2me/main.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/InputField.dart';
 import 'package:carton2me/presentation/screens/auth/Widget/submit_button.dart';
 import 'package:carton2me/presentation/screens/auth/forgot_password.dart';
@@ -12,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -22,7 +21,6 @@ class LoginState extends State<LoginScreen> {
   bool isLoading = false;
   bool _obscureText = true;
   final _formKey = GlobalKey<FormState>();
-
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -215,27 +213,37 @@ class LoginState extends State<LoginScreen> {
         setState(() {
           isLoading = false;
         });
-          Fluttertoast.showToast(
+        Fluttertoast.showToast(
             msg: jsonResponse['message'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red.withOpacity(0.1),
+            backgroundColor: Colors.red.withOpacity(0.1),
             textColor: Colors.red,
             fontSize: 16.0);
       } else if (jsonResponse['status'] == 'success') {
         setState(() {
           isLoading = false;
         });
-
         final userdata = jsonResponse['users'];
         UserModel user = UserModel.fromJson(userdata);
+        print('user: ${user}');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', jsonResponse['accessToken']);
+        prefs.setString('userId', user.id.toString());
+        prefs.setString('firstName', user.firstName.toString());
+        prefs.setString('lastName', user.lastName.toString());
+        prefs.setString('email', user.emailAddress.toString());
+        prefs.setString('phoneNumber', user.phoneNumber.toString());
+        prefs.setString('companyName', user.companyName.toString());
+        prefs.setString('dateOfBirth', user.dateOfBirth.toString());
+        prefs.setString('userAvatar', user.userAvatar.toString());
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(user: user),
+              builder: (context) => const HomeScreen(),
             ));
-              Fluttertoast.showToast(
+        Fluttertoast.showToast(
             msg: "User Logged In Successfully",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
@@ -262,7 +270,7 @@ class LoginState extends State<LoginScreen> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
-            backgroundColor: Colors.white.withOpacity(0.5),
+          backgroundColor: Colors.white.withOpacity(0.5),
           textColor: Colors.red,
           fontSize: 16.0);
     }
